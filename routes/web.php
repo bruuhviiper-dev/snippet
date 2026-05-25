@@ -31,6 +31,22 @@ Route::get('/explore', [PublicSnippetController::class, 'explore'])->name('explo
 Route::get('/explore/{language}', [PublicSnippetController::class, 'exploreLanguage'])->name('explore.language');
 Route::get('/s/{snippet}', [PublicSnippetController::class, 'show'])->name('snippets.public');
 
+Route::get('/changelog', function () {
+    return Inertia::render('Changelog');
+})->name('changelog');
+
+Route::get('/terms', function () {
+    return Inertia::render('Terms');
+})->name('terms');
+
+Route::get('/privacy', function () {
+    return Inertia::render('Privacy');
+})->name('privacy');
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name('contact');
+
 Route::get('/dashboard', [SnippetController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 

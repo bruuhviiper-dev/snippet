@@ -1,3 +1,5 @@
+import { Link } from '@inertiajs/react';
+
 export default function Footer() {
     return (
         <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0f172a] pt-16 pb-8">
@@ -14,16 +16,16 @@ export default function Footer() {
                 <div>
                     <h4 className="font-bold text-slate-900 dark:text-white mb-4">Produto</h4>
                     <ul className="space-y-2 text-sm text-slate-500">
-                        <li><a href="/pricing" className="hover:text-accent transition">Preços</a></li>
-                        <li><a href="#" className="hover:text-accent transition">Changelog</a></li>
+                        <li><Link href="/pricing" className="hover:text-accent transition">Preços</Link></li>
+                        <li><Link href="/changelog" className="hover:text-accent transition">Changelog</Link></li>
                     </ul>
                 </div>
                 <div>
                     <h4 className="font-bold text-slate-900 dark:text-white mb-4">Legal</h4>
                     <ul className="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" className="hover:text-accent transition">Termos de Uso</a></li>
-                        <li><a href="#" className="hover:text-accent transition">Privacidade</a></li>
-                        <li><a href="#" className="hover:text-accent transition">Contato</a></li>
+                        <li><Link href="/terms" className="hover:text-accent transition">Termos de Uso</Link></li>
+                        <li><Link href="/privacy" className="hover:text-accent transition">Privacidade</Link></li>
+                        <li><Link href="/contact" className="hover:text-accent transition">Contato</Link></li>
                     </ul>
                 </div>
             </div>
