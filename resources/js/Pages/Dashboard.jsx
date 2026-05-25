@@ -314,7 +314,7 @@ export default function Dashboard() {
             )}
 
             {/* COLUNA 1 — Sidebar esquerda */}
-            <aside className={`fixed inset-y-0 left-0 z-50 ${isSidebarCollapsed ? 'w-[70px]' : 'w-[260px] md:relative md:w-[200px] lg:w-[240px]'} flex-shrink-0 bg-[#fafafa] dark:bg-[#0A0A0B] border-r border-slate-200 dark:border-slate-800/60 flex flex-col h-full transform transition-all duration-300 ease-in-out ${showMobileMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+            <aside className={`fixed md:relative inset-y-0 left-0 z-50 ${isSidebarCollapsed ? 'w-[70px]' : 'w-[260px] md:w-[200px] lg:w-[240px]'} flex-shrink-0 bg-[#fafafa] dark:bg-[#0A0A0B] border-r border-slate-200 dark:border-slate-800/60 flex flex-col h-full transform transition-all duration-300 ease-in-out ${showMobileMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
                 {/* Topo / Logo */}
                 <div className={`h-14 flex items-center ${isSidebarCollapsed ? 'justify-center flex-col relative py-2 h-auto' : 'justify-between px-4'} border-b border-slate-200 dark:border-slate-800/60 shrink-0`}>
                     <Link href="/" className={`flex items-center gap-2 ${isSidebarCollapsed ? 'mb-2' : ''}`} onClick={() => setShowMobileMenu(false)}>
