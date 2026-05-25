@@ -1,6 +1,6 @@
 import { Head, usePage, router, Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import { Search, Plus, Code, Star, Compass, Clock, Folder, Heart, MoreHorizontal, Copy, Edit2, Share2, Sparkles, Save, Trash2, Zap, ArrowLeft, Tag, Crown, LogOut, User, ChevronDown, Menu, X } from 'lucide-react';
+import { Search, Plus, Code, Star, Compass, Clock, Folder, Heart, MoreHorizontal, Copy, Edit2, Share2, Sparkles, Save, Trash2, Zap, ArrowLeft, Tag, Crown, LogOut, User, ChevronDown, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
@@ -25,6 +25,7 @@ export default function Dashboard() {
     const [currentFilter, setCurrentFilter] = useState('Todos'); 
     const [menuActive, setMenuActive] = useState('meus'); // meus, favs, explore, recentes
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [showAiModal, setShowAiModal] = useState(false);
     const [aiPrompt, setAiPrompt] = useState('');
@@ -313,68 +314,78 @@ export default function Dashboard() {
             )}
 
             {/* COLUNA 1 — Sidebar esquerda */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-[260px] md:relative md:w-[200px] lg:w-[240px] flex-shrink-0 bg-[#fafafa] dark:bg-[#0A0A0B] border-r border-slate-200 dark:border-slate-800/60 flex flex-col h-full transform transition-transform duration-300 ease-in-out ${showMobileMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+            <aside className={`fixed inset-y-0 left-0 z-50 ${isSidebarCollapsed ? 'w-[70px]' : 'w-[260px] md:relative md:w-[200px] lg:w-[240px]'} flex-shrink-0 bg-[#fafafa] dark:bg-[#0A0A0B] border-r border-slate-200 dark:border-slate-800/60 flex flex-col h-full transform transition-all duration-300 ease-in-out ${showMobileMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
                 {/* Topo / Logo */}
-                <div className="h-14 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800/60 shrink-0">
-                    <Link href="/" className="flex items-center gap-2" onClick={() => setShowMobileMenu(false)}>
+                <div className={`h-14 flex items-center ${isSidebarCollapsed ? 'justify-center flex-col relative py-2 h-auto' : 'justify-between px-4'} border-b border-slate-200 dark:border-slate-800/60 shrink-0`}>
+                    <Link href="/" className={`flex items-center gap-2 ${isSidebarCollapsed ? 'mb-2' : ''}`} onClick={() => setShowMobileMenu(false)}>
                         <div className="bg-[#A8FF3E] text-slate-900 p-1 rounded">
                             <Code size={16} strokeWidth={2.5} />
                         </div>
-                        <span className="font-bold text-[15px] tracking-tight dark:text-white">SnippetVault</span>
+                        {!isSidebarCollapsed && <span className="font-bold text-[15px] tracking-tight dark:text-white">SnippetVault</span>}
                     </Link>
-                    <button onClick={() => setShowMobileMenu(false)} className="md:hidden text-slate-400 hover:text-slate-600">
-                        <X size={20} />
+                    {!isSidebarCollapsed && (
+                        <button onClick={() => setShowMobileMenu(false)} className="md:hidden text-slate-400 hover:text-slate-600">
+                            <X size={20} />
+                        </button>
+                    )}
+                    <button 
+                        onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+                        className={`hidden md:flex text-slate-400 hover:text-slate-600 transition`}
+                    >
+                        {isSidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+                <div className={`flex-1 overflow-y-auto ${isSidebarCollapsed ? 'px-2 py-4' : 'px-3 py-4'} space-y-6 hide-scrollbar`}>
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">Menu</p>
+                        {!isSidebarCollapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">Menu</p>}
                         <nav className="space-y-0.5">
-                            <button onClick={() => setMenuActive('meus')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${menuActive === 'meus' ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'}`}>
+                            <button onClick={() => setMenuActive('meus')} className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'} rounded-xl transition ${menuActive === 'meus' ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'}`} title="Meus snippets">
                                 <Code size={18} />
-                                <span className="font-medium text-sm">Meus snippets</span>
+                                {!isSidebarCollapsed && <span className="font-medium text-sm">Meus snippets</span>}
                             </button>
-                            <button onClick={() => setMenuActive('favs')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${menuActive === 'favs' ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'}`}>
+                            <button onClick={() => setMenuActive('favs')} className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'} rounded-xl transition ${menuActive === 'favs' ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'}`} title="Favoritos">
                                 <Star size={18} className={menuActive === 'favs' ? 'text-yellow-400 fill-current' : ''} />
-                                <span className="font-medium text-sm">Favoritos</span>
+                                {!isSidebarCollapsed && <span className="font-medium text-sm">Favoritos</span>}
                             </button>
-                            <Link href={route('explore')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white`}>
+                            <Link href={route('explore')} className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'} rounded-xl transition text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white`} title="Explorar públicos">
                                 <Compass size={18} />
-                                <span className="font-medium text-sm">Explorar públicos</span>
+                                {!isSidebarCollapsed && <span className="font-medium text-sm">Explorar públicos</span>}
                             </Link>
-                            <button onClick={() => setMenuActive('recentes')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${menuActive === 'recentes' ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'}`}>
+                            <button onClick={() => setMenuActive('recentes')} className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'} rounded-xl transition ${menuActive === 'recentes' ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'}`} title="Recentes">
                                 <Clock size={18} />
-                                <span className="font-medium text-sm">Recentes</span>
+                                {!isSidebarCollapsed && <span className="font-medium text-sm">Recentes</span>}
                             </button>
                         </nav>
                     </div>
 
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">Pastas</p>
+                        {!isSidebarCollapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2 mt-4">Pastas</p>}
+                        {isSidebarCollapsed && <div className="h-px bg-slate-200 dark:bg-slate-800 my-4 mx-2"></div>}
                         <nav className="space-y-0.5">
                             {folders?.map(folder => (
                                 <button 
                                     key={folder.id} 
                                     onClick={() => setMenuActive(`folder_${folder.id}`)}
-                                    className={`w-full group flex items-center justify-between px-3 py-2 text-sm font-medium transition-colors ${menuActive === `folder_${folder.id}` ? 'bg-white dark:bg-[#161618] text-slate-900 dark:text-white border-l-[3px] shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#161618] border-l-[3px] border-transparent'}`}
+                                    title={folder.name}
+                                    className={`w-full group flex items-center ${isSidebarCollapsed ? 'justify-center p-2.5' : 'justify-between px-3 py-2'} text-sm font-medium transition-colors ${menuActive === `folder_${folder.id}` ? 'bg-white dark:bg-[#161618] text-slate-900 dark:text-white border-l-[3px] shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#161618] border-l-[3px] border-transparent'}`}
                                     style={menuActive === `folder_${folder.id}` ? { borderLeftColor: folder.color || '#A8FF3E' } : {}}
                                 >
                                     <div className="flex items-center gap-3">
                                         <Folder size={16} style={{ color: folder.color || (menuActive === `folder_${folder.id}` ? '#A8FF3E' : '') }} className={!folder.color && menuActive !== `folder_${folder.id}` ? "text-slate-400" : ""} /> 
-                                        {folder.name}
+                                        {!isSidebarCollapsed && <span>{folder.name}</span>}
                                     </div>
-                                    <Trash2 size={12} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => { e.stopPropagation(); if(confirm('Excluir pasta?')) router.delete(`/folders/${folder.id}`); }} />
+                                    {!isSidebarCollapsed && <Trash2 size={12} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-2" onClick={(e) => { e.stopPropagation(); if(confirm('Excluir pasta?')) router.delete(`/folders/${folder.id}`); }} />}
                                 </button>
                             ))}
-                            <button onClick={handleCreateFolder} className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors mt-1 border-l-[3px] border-transparent">
-                                <Plus size={16} /> Nova pasta
+                            <button onClick={handleCreateFolder} title="Nova pasta" className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2'} text-sm font-medium text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors mt-1 border-l-[3px] border-transparent`}>
+                                <Plus size={16} /> {!isSidebarCollapsed && <span>Nova pasta</span>}
                             </button>
                         </nav>
                     </div>
 
                     {/* PRO Banner */}
-                    {!auth.user?.is_pro && (
+                    {(!auth.user?.is_pro && !isSidebarCollapsed) && (
                         <div className="mt-8 bg-white dark:bg-[#111] border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-24 h-24 bg-[#A8FF3E]/10 rounded-full blur-2xl pointer-events-none group-hover:bg-[#A8FF3E]/20 transition"></div>
                             <h4 className="font-bold text-sm mb-2 text-slate-900 dark:text-white flex items-center gap-1.5"><Crown size={14} className="text-[#A8FF3E]" /> Upgrade para Pro</h4>
@@ -382,20 +393,27 @@ export default function Dashboard() {
                             <button onClick={() => setShowUpgradeModal(true)} className="w-full py-2 bg-[#A8FF3E] hover:bg-[#9BEB39] text-slate-900 text-xs font-bold rounded-xl transition shadow-sm">Ver planos</button>
                         </div>
                     )}
+                    {(!auth.user?.is_pro && isSidebarCollapsed) && (
+                        <button onClick={() => setShowUpgradeModal(true)} title="Upgrade para Pro" className="mt-8 w-full flex justify-center p-2.5 text-[#A8FF3E] hover:bg-[#A8FF3E]/10 rounded-xl transition">
+                            <Crown size={20} />
+                        </button>
+                    )}
                 </div>
 
-                <div className="p-3 border-t border-slate-200 dark:border-slate-800 mt-auto">
-                    <div className="flex items-center justify-between">
-                        <Link href="/profile" className="flex items-center gap-2 group flex-1 cursor-pointer">
-                            <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-bold text-xs group-hover:bg-[#A8FF3E] group-hover:text-slate-900 transition-colors">
+                <div className={`p-3 border-t border-slate-200 dark:border-slate-800 mt-auto ${isSidebarCollapsed ? 'flex flex-col gap-3 items-center' : ''}`}>
+                    <div className={`flex items-center w-full ${isSidebarCollapsed ? 'flex-col gap-3 justify-center' : 'justify-between'}`}>
+                        <Link href="/profile" className={`flex items-center gap-2 group cursor-pointer ${isSidebarCollapsed ? 'justify-center' : 'flex-1'}`} title={isSidebarCollapsed ? "Perfil" : ""}>
+                            <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-bold text-xs group-hover:bg-[#A8FF3E] group-hover:text-slate-900 transition-colors shrink-0">
                                 {auth.user?.name?.charAt(0)}
                             </div>
-                            <div className="overflow-hidden">
-                                <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{auth.user?.name}</p>
-                                <p className="text-[10px] text-slate-500 truncate">{auth.user?.plan === 'pro' ? 'Pro Plan' : 'Free Plan'}</p>
-                            </div>
+                            {!isSidebarCollapsed && (
+                                <div className="overflow-hidden">
+                                    <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{auth.user?.name}</p>
+                                    <p className="text-[10px] text-slate-500 truncate">{auth.user?.plan === 'pro' ? 'Pro Plan' : 'Free Plan'}</p>
+                                </div>
+                            )}
                         </Link>
-                        <button onClick={handleLogout} className="text-slate-400 hover:text-red-500 transition-colors p-2" title="Sair">
+                        <button onClick={handleLogout} className="text-slate-400 hover:text-red-500 transition-colors p-2 shrink-0" title="Sair">
                             <LogOut size={16} />
                         </button>
                     </div>
