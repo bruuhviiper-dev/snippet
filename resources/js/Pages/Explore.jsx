@@ -94,7 +94,7 @@ export default function Explore({ snippets, languageCounts, filters }) {
                                 </div>
                             </div>
                             
-                            <h3 className="text-xl lg:text-2xl font-extrabold mb-3 group-hover:text-accent transition relative z-10 leading-tight">{snippet.title}</h3>
+                            <h3 className="text-xl lg:text-2xl font-extrabold mb-3 text-slate-900 dark:text-white group-hover:text-slate-900 dark:group-hover:text-accent transition relative z-10 leading-tight">{snippet.title}</h3>
                             
                             <p className="text-sm lg:text-base text-slate-500 line-clamp-3 mb-6 flex-1 relative z-10">
                                 {snippet.description || `Exemplo de código em ${snippet.language}.`}

@@ -181,7 +181,7 @@ export default function PublicSnippet({ snippet, relatedSnippets, languageCounts
                                         <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-[#7AE600] rounded-2xl blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
                                         <div className="relative z-10 flex-1">
                                             <LanguageBadge language={rel.language} className="mb-4" />
-                                            <h4 className="font-bold text-base leading-snug group-hover:text-accent transition-colors line-clamp-2 mb-2">{rel.title}</h4>
+                                            <h4 className="font-bold text-base leading-snug text-slate-900 dark:text-white group-hover:text-slate-900 dark:group-hover:text-accent transition-colors line-clamp-2 mb-2">{rel.title}</h4>
                                         </div>
                                         <div className="relative z-10 flex items-center justify-between mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/50">
                                             <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
